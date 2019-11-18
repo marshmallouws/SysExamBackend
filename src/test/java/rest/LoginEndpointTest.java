@@ -72,11 +72,11 @@ public class LoginEndpointTest {
 
             Role userRole = new Role("user");
             Role adminRole = new Role("admin");
-            User user = new User("user", "test");
+            User user = new User("user", "test1");
             user.addRole(userRole);
-            User admin = new User("admin", "test");
+            User admin = new User("admin", "test2");
             admin.addRole(adminRole);
-            User both = new User("user_admin", "test");
+            User both = new User("user_admin", "test3");
             both.addRole(userRole);
             both.addRole(adminRole);
             em.persist(userRole);
@@ -129,7 +129,7 @@ public class LoginEndpointTest {
 
   @Test
   public void testRestForAdmin() {
-    login("admin", "test");
+    login("admin", "test2");
     given()
             .contentType("application/json")
             .accept(ContentType.JSON)
@@ -142,7 +142,7 @@ public class LoginEndpointTest {
 
   @Test
   public void testRestForUser() {
-    login("user", "test");
+    login("user", "test1");
     given()
             .contentType("application/json")
             .header("x-access-token", securityToken)
@@ -154,7 +154,7 @@ public class LoginEndpointTest {
   
   @Test
   public void testAutorizedUserCannotAccesAdminPage() {
-    login("user", "test");
+    login("user", "test1");
     given()
             .contentType("application/json")
             .header("x-access-token", securityToken)
@@ -165,7 +165,7 @@ public class LoginEndpointTest {
   
   @Test
   public void testAutorizedAdminCannotAccesUserPage() {
-    login("admin", "test");
+    login("admin", "test2");
     given()
             .contentType("application/json")
             .header("x-access-token", securityToken)
@@ -176,7 +176,7 @@ public class LoginEndpointTest {
   
   @Test
   public void testRestForMultiRole1() {
-    login("user_admin", "test");
+    login("user_admin", "test3");
     given()
             .contentType("application/json")
             .accept(ContentType.JSON)
@@ -189,7 +189,7 @@ public class LoginEndpointTest {
 
   @Test
   public void testRestForMultiRole2() {
-    login("user_admin", "test");
+    login("user_admin", "test3");
     given()
             .contentType("application/json")
             .header("x-access-token", securityToken)

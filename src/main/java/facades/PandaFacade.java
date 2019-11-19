@@ -14,7 +14,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Scanner;
 
-
 public class PandaFacade implements IPandaFacade {
 
     @Override
@@ -37,7 +36,7 @@ public class PandaFacade implements IPandaFacade {
         
         SeriesDTO[] result = gson.fromJson(jsonStr, SeriesDTO[].class);
         
-        System.out.println(result[0].full_name);
+        System.out.println(result[0].videogame.name);
         return result;
 
     }

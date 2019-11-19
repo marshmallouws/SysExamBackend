@@ -5,13 +5,18 @@
  */
 package facades;
 
+import com.google.gson.JsonObject;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import net.minidev.json.JSONObject;
+
 /**
  *
  * @author Victor
  */
 public interface IPandaFacade {
     
-    public String getAllSeries(String query);
+    public JSONObject getAllSeries(String query) throws MalformedURLException, IOException;
     public String getSingleSerie(String query);
     
 }

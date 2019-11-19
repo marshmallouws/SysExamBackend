@@ -1,79 +1,78 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
-/**
- *
- * @author Annika
- */
-public class TournamentDTO {
-    private String beginAt;
-    private String endAt;
-    private int id;
-    private int leageId;
-    private String modifiedAt;
-    private String name;
-    private String prizepool;
-    private int seriesId;
-    private String slug;
-    private int winnerId;
-    private String winnerType;
+import java.util.HashMap;
+import java.util.Map;
 
-    public TournamentDTO(String beginAt, String endAt, int id, int leageId, String modifiedAt, String name, String prizepool, int seriesId, String slug, int winnerId, String winnerType) {
-        this.beginAt = beginAt;
-        this.endAt = endAt;
+
+public class TournamentDTO {
+
+    public String begin_at;
+    public String end_at;
+    public Integer id;
+    public Integer league_id;
+    public String modified_at;
+    public String name;
+    public Object prizepool;
+    public Integer serie_id;
+    public String slug;
+    public Object winner_id;
+    public Object winner_type;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    public TournamentDTO(String begin_at, String end_at, Integer id, Integer league_id, String modified_at, String name, Object prizepool, Integer serie_id, String slug, Object winner_id, Object winner_type) {
+        this.begin_at = begin_at;
+        this.end_at = end_at;
         this.id = id;
-        this.leageId = leageId;
-        this.modifiedAt = modifiedAt;
+        this.league_id = league_id;
+        this.modified_at = modified_at;
         this.name = name;
         this.prizepool = prizepool;
-        this.seriesId = seriesId;
+        this.serie_id = serie_id;
         this.slug = slug;
-        this.winnerId = winnerId;
-        this.winnerType = winnerType;
+        this.winner_id = winner_id;
+        this.winner_type = winner_type;
     }
 
-    public String getBeginAt() {
-        return beginAt;
+    
+    
+    public String getBegin_at() {
+        return begin_at;
     }
 
-    public void setBeginAt(String beginAt) {
-        this.beginAt = beginAt;
+    public void setBegin_at(String begin_at) {
+        this.begin_at = begin_at;
     }
 
-    public String getEndAt() {
-        return endAt;
+    public String getEnd_at() {
+        return end_at;
     }
 
-    public void setEndAt(String endAt) {
-        this.endAt = endAt;
+    public void setEnd_at(String end_at) {
+        this.end_at = end_at;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getLeageId() {
-        return leageId;
+    public Integer getLeague_id() {
+        return league_id;
     }
 
-    public void setLeageId(int leageId) {
-        this.leageId = leageId;
+    public void setLeague_id(Integer league_id) {
+        this.league_id = league_id;
     }
 
-    public String getModifiedAt() {
-        return modifiedAt;
+    public String getModified_at() {
+        return modified_at;
     }
 
-    public void setModifiedAt(String modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    public void setModified_at(String modified_at) {
+        this.modified_at = modified_at;
     }
 
     public String getName() {
@@ -84,20 +83,20 @@ public class TournamentDTO {
         this.name = name;
     }
 
-    public String getPrizepool() {
+    public Object getPrizepool() {
         return prizepool;
     }
 
-    public void setPrizepool(String prizepool) {
+    public void setPrizepool(Object prizepool) {
         this.prizepool = prizepool;
     }
 
-    public int getSeriesId() {
-        return seriesId;
+    public Integer getSerie_id() {
+        return serie_id;
     }
 
-    public void setSeriesId(int seriesId) {
-        this.seriesId = seriesId;
+    public void setSerie_id(Integer serie_id) {
+        this.serie_id = serie_id;
     }
 
     public String getSlug() {
@@ -108,19 +107,29 @@ public class TournamentDTO {
         this.slug = slug;
     }
 
-    public int getWinnerId() {
-        return winnerId;
+    public Object getWinner_id() {
+        return winner_id;
     }
 
-    public void setWinnerId(int winnerId) {
-        this.winnerId = winnerId;
+    public void setWinner_id(Object winner_id) {
+        this.winner_id = winner_id;
     }
 
-    public String getWinnerType() {
-        return winnerType;
+    public Object getWinner_type() {
+        return winner_type;
     }
 
-    public void setWinnerType(String winnerType) {
-        this.winnerType = winnerType;
+    public void setWinner_type(Object winner_type) {
+        this.winner_type = winner_type;
     }
+
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    
 }

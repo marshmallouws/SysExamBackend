@@ -1,30 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
-/**
- *
- * @author Annika
- */
-class VideogameDTO {
-    private int id;
-    private String name;
-    private String slug;
-    
-    public VideogameDTO(int id, String name, String slug) {
+import java.util.HashMap;
+import java.util.Map;
+
+public class VideogameDTO {
+
+    public Integer id;
+    public String name;
+    public String slug;
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    public VideogameDTO(Integer id, String name, String slug) {
         this.id = id;
         this.name = name;
         this.slug = slug;
     }
-
-    public int getId() {
+    
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -43,4 +39,14 @@ class VideogameDTO {
     public void setSlug(String slug) {
         this.slug = slug;
     }
+
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    
 }

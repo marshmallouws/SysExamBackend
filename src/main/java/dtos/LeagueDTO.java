@@ -1,38 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
-/**
- *
- * @author Annika
- */
-public class LeagueDTO {
-    private int id;
-    private String image_url;
-    private boolean isLiveSupported;
-    private String modifiedAt;
-    private String name;
-    private String slug;
-    private String url;
+import java.util.HashMap;
+import java.util.Map;
 
-    public LeagueDTO(int id, String image_url, boolean isLiveSupported, String modifiedAt, String name, String slug, String url) {
+public class LeagueDTO {
+
+    public Integer id;
+    public String image_url;
+    public Boolean live_supported;
+    public String modified_at;
+    public String name;
+    public String slug;
+    public Object url;
+    public Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    public LeagueDTO(Integer id, String image_url, Boolean live_supported, String modified_at, String name, String slug, Object url) {
         this.id = id;
         this.image_url = image_url;
-        this.isLiveSupported = isLiveSupported;
-        this.modifiedAt = modifiedAt;
+        this.live_supported = live_supported;
+        this.modified_at = modified_at;
         this.name = name;
         this.slug = slug;
         this.url = url;
     }
 
-    public int getId() {
+    
+    
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,20 +42,20 @@ public class LeagueDTO {
         this.image_url = image_url;
     }
 
-    public boolean isIsLiveSupported() {
-        return isLiveSupported;
+    public Boolean getLive_supported() {
+        return live_supported;
     }
 
-    public void setIsLiveSupported(boolean isLiveSupported) {
-        this.isLiveSupported = isLiveSupported;
+    public void setLive_supported(Boolean live_supported) {
+        this.live_supported = live_supported;
     }
 
-    public String getModifiedAt() {
-        return modifiedAt;
+    public String getModified_at() {
+        return modified_at;
     }
 
-    public void setModifiedAt(String modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    public void setModified_at(String modified_at) {
+        this.modified_at = modified_at;
     }
 
     public String getName() {
@@ -76,11 +74,21 @@ public class LeagueDTO {
         this.slug = slug;
     }
 
-    public String getUrl() {
+    public Object getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(Object url) {
         this.url = url;
     }
+
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+    
+    
 }

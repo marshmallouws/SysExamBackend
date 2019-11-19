@@ -5,32 +5,22 @@
  */
 package facades;
 
-import com.mysql.cj.util.Util;
+import com.google.gson.Gson;
+import dtos.SeriesDTO;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.json.Json;
-import javax.ws.rs.core.MediaType;
-import net.minidev.json.JSONObject;
-import org.json.*;
 
-/**
- *
- * @author Annika StringBuilder, Threads, DTO
- */
+
 public class PandaFacade implements IPandaFacade {
 
     @Override
-    public String getAllSeries(String query) throws MalformedURLException, IOException, ProtocolException {
+    public SeriesDTO[] getAllSeries(String query) throws MalformedURLException, IOException, ProtocolException {
         URL url = new URL("https://api.pandascore.co/series?" + "token=uNIfp_1YhqRYLQTjQmWHXfiuQxg-r01KBjo_NOtr8k4ncXJLQ6g");
+        Gson gson = new Gson();
         
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -43,22 +33,13 @@ public class PandaFacade implements IPandaFacade {
         if(scan.hasNext()) {
             jsonStr = scan.nextLine();
         }
-        
         scan.close();
-        JSONObject j = new JSONObject(jsonStr);
-//        JSONObject obj = new JSONObject();
-        //JSONObject json = 
         
-//        JSONObject j = new JSONObject();
-//        Object o = con.getContent();
+        SeriesDTO[] result = gson.fromJson(jsonStr, SeriesDTO[].class);
+        
+        System.out.println(result[0].full_name);
+        return result;
 
-        return rootobj;
-        
-        
-                JsonParser jp = new JsonParser();
-        JsonElement root = jp.parse(new InputStreamReader((InputStream)
-        con.getContent()));
-        JsonObject rootobj = root.getAsJsonObject();
     }
 
     @Override
@@ -73,20 +54,3 @@ public class PandaFacade implements IPandaFacade {
 
 }
 
-
-/*
- public String getSwapiData(int id) throws MalformedURLException, IOException {
-        URL url = new URL("https://swapi.co/api/people/" + id);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-        con.setRequestProperty("User-Agent", "server"); //remember if you are using SWAPI
-        Scanner scan = new Scanner(con.getInputStream());
-        String jsonStr = null;
-        if (scan.hasNext()) {
-            jsonStr = scan.nextLine();
-        }
-        scan.close();
-        return jsonStr;
-    }´
-*/

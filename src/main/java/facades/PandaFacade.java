@@ -15,10 +15,18 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class PandaFacade implements IPandaFacade {
+    private static PandaFacade instance;
+    
+    public static PandaFacade getPandaFacade() {
+        if(instance == null)  {
+            instance = new PandaFacade();
+        }
+        return instance;
+    }
 
     @Override
     public SeriesDTO[] getAllSeries(String query) throws MalformedURLException, IOException, ProtocolException {
-        URL url = new URL("https://api.pandascore.co/series?" + "token=uNIfp_1YhqRYLQTjQmWHXfiuQxg-r01KBjo_NOtr8k4ncXJLQ6g");
+        URL url = new URL("https://api.pandascore.co/series?sort=-year&per_page=15&" + "token=uNIfp_1YhqRYLQTjQmWHXfiuQxg-r01KBjo_NOtr8k4ncXJLQ6g");
         Gson gson = new Gson();
         
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

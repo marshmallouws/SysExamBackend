@@ -1,7 +1,10 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import entities.User;
+import errorhandling.AuthenticationException;
+import facades.UserFacade;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -22,7 +25,9 @@ import utils.EMF_Creator;
 public class DemoResource {
 
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
-
+    private static final UserFacade FACADE =  UserFacade.getUserFacade(EMF);
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    
     @Context
     private UriInfo context;
 
@@ -66,5 +71,18 @@ public class DemoResource {
     public String getFromAdmin() {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
+    }
+    
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookmarks-test")
+    public String getBookmarksForUser() throws AuthenticationException {
+        User user = FACADE.getVeryfiedUser("user", "test1");
+
+        System.out.println(user.getBookmarkList());
+        //return GSON.toJson(user.getBookmarkList());
+        return "{\"msg\": \"Bookmarks for user: " + user.getBookmarkList().toString() + "\"}";
+        
     }
 }

@@ -1,4 +1,5 @@
 package utils;
+import entities.Bookmark;
 import entities.Role;
 import entities.User;
 
@@ -28,7 +29,13 @@ public class SetupTestUsers {
     em.getTransaction().begin();
     Role userRole = new Role("user");
     Role adminRole = new Role("admin");
+    Bookmark bookmark1 = new Bookmark("Bookmark content #1");
+    Bookmark bookmark2 = new Bookmark("Bookmark content #2");
+    Bookmark bookmark3 = new Bookmark("Bookmark content #3");
     user.addRole(userRole);
+    user.addBookmark(bookmark1);
+    user.addBookmark(bookmark2);
+    user.addBookmark(bookmark3);
     admin.addRole(adminRole);
     both.addRole(userRole);
     both.addRole(adminRole);

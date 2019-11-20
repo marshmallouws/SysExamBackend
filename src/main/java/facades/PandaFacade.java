@@ -23,10 +23,12 @@ public class PandaFacade implements IPandaFacade {
         }
         return instance;
     }
+    
+    private static String apiKey = System.getenv("S3_PANDA_TOKEN");
 
     @Override
     public SeriesDTO[] getAllSeries(String query) throws MalformedURLException, IOException, ProtocolException {
-        URL url = new URL("https://api.pandascore.co/series?sort=-year&per_page=15&" + "token=uNIfp_1YhqRYLQTjQmWHXfiuQxg-r01KBjo_NOtr8k4ncXJLQ6g");
+        URL url = new URL("https://api.pandascore.co/series?sort=-year&per_page=15&" + "token="+apiKey);
         Gson gson = new Gson();
         
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

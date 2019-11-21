@@ -5,21 +5,61 @@
  */
 package facades;
 
-/**
- *
- * @author Annika
- * StringBuilder, Threads, DTO
- */
+import com.google.gson.Gson;
+import dtos.SeriesDTO;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.Scanner;
+
 public class PandaFacade implements IPandaFacade {
+    private static PandaFacade instance;
+    
+    public static PandaFacade getPandaFacade() {
+        if(instance == null)  {
+            instance = new PandaFacade();
+        }
+        return instance;
+    }
+    
+    private static String apiKey = System.getenv("S3_PANDA_TOKEN");
 
     @Override
-    public String getAllSeries(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SeriesDTO[] getAllSeries(String query) throws MalformedURLException, IOException, ProtocolException {
+        URL url = new URL("https://api.pandascore.co/series?sort=-year&per_page=15&" + "token="+apiKey);
+        Gson gson = new Gson();
+        
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+        con.setRequestProperty("Content", "application/json");
+        
+        Scanner scan = new Scanner(con.getInputStream());
+
+        String jsonStr = null;
+        if(scan.hasNext()) {
+            jsonStr = scan.nextLine();
+        }
+        scan.close();
+        
+        SeriesDTO[] result = gson.fromJson(jsonStr, SeriesDTO[].class);
+        
+        System.out.println(result[0].videogame.name);
+        return result;
+
     }
 
     @Override
     public String getSingleSerie(String query) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    public static void main(String[] args) throws IOException {
+        PandaFacade p = new PandaFacade();
+        System.out.println(p.getAllSeries(""));
+    }
+
 }
+

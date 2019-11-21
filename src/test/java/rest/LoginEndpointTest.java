@@ -107,7 +107,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .body(json)
                 //.when().post("/api/login")
-                .when().post("/login")
+                .when().post("/auth/login")
                 .then()
                 .extract().path("token");
         System.out.println("TOKEN ---> " + securityToken);

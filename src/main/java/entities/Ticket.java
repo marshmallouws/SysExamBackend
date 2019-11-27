@@ -37,17 +37,21 @@ public class Ticket implements Serializable {
     @Column(name = "series_id")
     private int seriesId;
     
+    @Column(name = "amount")
+    private int amount;
+    
     @ManyToOne
     @JoinColumn(name = "username")
     private User buyer;
     
     public Ticket(){}
     
-    public Ticket(double price, int seriesId, User buyer) {
+    public Ticket(double price, int seriesId, User buyer, int amount) {
         this.id = id;
         this.price = price;
         this.seriesId = seriesId;
         this.buyer = buyer;
+        this.amount = amount;
     }
 
     public Integer getId() {
@@ -80,5 +84,13 @@ public class Ticket implements Serializable {
 
     public void setBuyer(User buyer) {
         this.buyer = buyer;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+    
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

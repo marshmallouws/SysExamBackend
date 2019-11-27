@@ -48,6 +48,16 @@ public class TicketRessource {
         return Response.ok(ticket).build();
     }
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/all/{username}")
+    public Response getTickets(@PathParam("username") String username) {
+        return Response.ok(FACADE.getTickets(username)).build();
+    }
+    /*
+    
+    @POST
+    @Produces(MediaType.)
     
     
     /*

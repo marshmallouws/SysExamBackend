@@ -14,15 +14,18 @@ import entities.Ticket;
 public class TicketDTO {
     private int series_id;
     private String username;
+    private int amount;
     
-    public TicketDTO(int series_id, String username) {
+    public TicketDTO(int series_id, String username, int amount) {
         this.series_id = series_id;
         this.username = username;
+        this.amount = amount;
     }
     
     public TicketDTO(Ticket t) {
         this.series_id = t.getSeriesId();
         this.username = t.getBuyer().getUserName();
+        this.amount = t.getAmount();
     }
 
     public int getSeries_id() {
@@ -39,5 +42,9 @@ public class TicketDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    
+    public int getAmount() {
+        return amount;
     }
 }

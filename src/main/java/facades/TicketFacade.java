@@ -13,7 +13,11 @@ import entities.Ticket;
 import entities.User;
 import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.RollbackException;
+import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 
 /**
@@ -54,32 +58,63 @@ public class TicketFacade {
             e.printStackTrace();
         }
         
-        Ticket ticket = new Ticket(500.0, seriesId, user);
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.seriesId = :sId AND t.buyer.userName = :username", Ticket.class);
+        query.setParameter("sId", seriesId);
+        query.setParameter("username", username);
+        Ticket ticket = null;
         
         try {
-            em.getTransaction().begin();
-            em.persist(ticket);
-            em.getTransaction().commit();
+            ticket = query.getSingleResult();
+            ticket.setAmount(ticket.getAmount() +1);
+        } catch (NoResultException e) {
+            ticket = new Ticket(500.0, seriesId, user, 1);
         } finally {
-            em.close();
+            try {
+                em.getTransaction().begin();
+                em.merge(ticket);
+                em.getTransaction().commit();
+            } finally {
+                em.close();
+            }
         }
         return new TicketDTO(ticket);
     }
     
-    public Ticket getTickets(String username) {
-        return null;
+    public List<TicketDTO> getTickets(String username) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.buyer.userName = :username", Ticket.class);
+        query.setParameter("username", username);
+        List<Ticket> tickets = query.getResultList();
+        List<TicketDTO> res = new ArrayList<>();
+        tickets.forEach(t -> {
+            res.add(new TicketDTO(t));
+        });
+        
+        return res;
     }
     
-    public Ticket getTicket(String username, int seriesId) {
-        return null;
+    public TicketDTO getTicket(String username, int seriesId) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.buyer.userName = :username AND t.seriesId = :sId", Ticket.class);
+        query.setParameter("sId", seriesId);
+        query.setParameter("username", username);
+        
+        try {
+            return new TicketDTO(query.getSingleResult());
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         TicketFacade t = TicketFacade.getTicketFacade(emf);
-        t.sellTicket("admin", 2299);
+        /*t.sellTicket("admin", 2299);
+        List<TicketDTO> l = t.getTickets("admin");
+        l.forEach(li -> {
+            System.out.println(li.getUsername() + li.getSeries_id() + " " + li.getAmount());
+        }); */
+        System.out.println(t.getTicket("admin", 2299));
+        System.out.println(t.getTicket("admin", 2301));
     }
-    
-    
-    
 }

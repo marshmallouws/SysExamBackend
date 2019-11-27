@@ -32,10 +32,12 @@ public class SetupTestUsers {
     Bookmark bookmark1 = new Bookmark("Bookmark content #1");
     Bookmark bookmark2 = new Bookmark("Bookmark content #2");
     Bookmark bookmark3 = new Bookmark("Bookmark content #3");
+    Bookmark m4 = new Bookmark("6666");
     user.addRole(userRole);
     user.addBookmark(bookmark1);
     user.addBookmark(bookmark2);
     user.addBookmark(bookmark3);
+    admin.addBookmark(m4);
     admin.addRole(adminRole);
     both.addRole(userRole);
     both.addRole(adminRole);

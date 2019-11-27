@@ -1,10 +1,14 @@
 package facades;
 
+import entities.Bookmark;
 import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import errorhandling.AuthenticationException;
+import java.util.List;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import utils.EMF_Creator;
 
 /**
@@ -58,6 +62,42 @@ public class UserFacade {
         }
         return user;
     }
+    
+    public long getUserCount(){
+        EntityManager em = emf.createEntityManager();
+        try{
+            long numOfUsers = (long)em.createQuery("SELECT COUNT(u) FROM User u").getSingleResult();
+            return numOfUsers;
+        }finally{  
+            em.close();
+        }
+    }
+    
+    public User getUser(String username) {
+        EntityManager em = emf.createEntityManager();
+        User user = null;
+        try {
+            user = em.find(User.class, username);
+        } finally {
+            em.close();
+        }
+        
+        return user;
+    }
+    
+    public Bookmark getBookmark(String username, String content) {
+        EntityManager em = emf.createEntityManager();
+        Bookmark bm = null;
+        try {
+            bm = (Bookmark)em.createQuery("SELECT b FROM Bookmark b WHERE b.user.userName = '" + username + "' AND b.bookmarkContent = '" + content + "'", Bookmark.class).getSingleResult();
+        } catch(NoResultException e) {
+            bm = new Bookmark("none");
+        } finally {
+            em.close();
+        }
+        return bm;
+    }
+    
     /*
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);

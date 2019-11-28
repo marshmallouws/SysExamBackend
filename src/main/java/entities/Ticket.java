@@ -42,15 +42,15 @@ public class Ticket implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "username")
-    private User buyer;
+    private User user;
     
     public Ticket(){}
     
-    public Ticket(double price, int seriesId, User buyer, int amount) {
+    public Ticket(double price, int seriesId, User user, int amount) {
         this.id = id;
         this.price = price;
         this.seriesId = seriesId;
-        this.buyer = buyer;
+        this.user = user;
         this.amount = amount;
     }
 
@@ -78,12 +78,12 @@ public class Ticket implements Serializable {
         this.seriesId = seriesId;
     }
 
-    public User getBuyer() {
-        return buyer;
+    public User getUser() {
+        return user;
     }
 
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getAmount() {

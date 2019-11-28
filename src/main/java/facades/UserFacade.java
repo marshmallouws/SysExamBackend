@@ -1,11 +1,13 @@
 package facades;
 
+import dtos.BookmarkDTO;
 import entities.Bookmark;
 import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import errorhandling.AuthenticationException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -96,6 +98,26 @@ public class UserFacade {
             em.close();
         }
         return bm;
+    }
+    
+    public List<BookmarkDTO> getUserBookmarks(String username) {
+        EntityManager em = emf.createEntityManager();
+        List<Bookmark> foundBookmarks = null;
+        List<BookmarkDTO> fbmdto = new ArrayList<>();
+        
+        try {
+            foundBookmarks = em.createQuery("SELECT b FROM Bookmark b WHERE b.user.userName = '" + username + "'", Bookmark.class).getResultList();
+            
+            for (Bookmark b : foundBookmarks) {
+                fbmdto.add(new BookmarkDTO(b.getUser().getUserName(), b.getBookmarkContent()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        
+        return fbmdto;
     }
     
     /*

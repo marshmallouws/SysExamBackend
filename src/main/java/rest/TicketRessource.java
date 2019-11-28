@@ -2,11 +2,14 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.TicketDTO;
 import facades.TicketFacade;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
@@ -33,17 +36,21 @@ public class TicketRessource {
     public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
-
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/buy")
     public Response buyTicket(String content) throws IOException {
-        JsonObject json = new JsonParser().parse(content).getAsJsonObject();
-        String username = json.get("username").getAsString();
-        int sId = json.get("series_id").getAsInt();
-        TicketDTO ticket = FACADE.sellTicket(username, sId);
-        return Response.ok(ticket).build();
+        JsonArray json = new JsonParser().parse(content).getAsJsonArray();
+        List<TicketDTO> tickets = new ArrayList();
+        json.forEach(element -> {
+            JsonObject j = (JsonObject) element;
+            String username = j.get("username").getAsString();
+            int sId = j.get("sId").getAsInt();
+            tickets.add(FACADE.sellTicket(username, sId));
+        });
+        return Response.ok(tickets).build();
     }
     
     @GET

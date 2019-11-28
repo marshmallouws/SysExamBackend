@@ -24,7 +24,7 @@ public class TicketDTO {
     
     public TicketDTO(Ticket t) {
         this.series_id = t.getSeriesId();
-        this.username = t.getBuyer().getUserName();
+        this.username = t.getUser().getUserName();
         this.amount = t.getAmount();
     }
 

@@ -7,10 +7,13 @@ package facades;
 
 import entities.Ticket;
 import entities.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
@@ -18,6 +21,7 @@ import utils.EMF_Creator;
  *
  * @author Annika
  */
+@Disabled
 public class TicketFacadeTest {
     
     private static EntityManagerFactory emf;
@@ -41,6 +45,7 @@ public class TicketFacadeTest {
             
             Ticket t = new Ticket(500.0, 2299, user, 2);
             Ticket t1 = new Ticket(500.0, 2299, user1, 4);
+            List<Ticket> tickets = new ArrayList<>();
             
             em.getTransaction().begin();
             em.persist(t);
@@ -50,10 +55,6 @@ public class TicketFacadeTest {
             em.close();
         }
             
-    }
-    
-    @Test
-    public void testAmountOfTickets() {
     }
     
     @Test

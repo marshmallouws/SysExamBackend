@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.TicketDTO;
-import facades.PandaFacade;
 import facades.TicketFacade;
 import java.io.IOException;
 import javax.persistence.EntityManagerFactory;
@@ -23,7 +22,6 @@ import utils.EMF_Creator;
 
 @Path("tickets")
 public class TicketRessource {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static final TicketFacade FACADE = TicketFacade.getTicketFacade(EMF);
 
@@ -54,17 +52,11 @@ public class TicketRessource {
     public Response getTickets(@PathParam("username") String username) {
         return Response.ok(FACADE.getTickets(username)).build();
     }
-    /*
     
-    @POST
-    @Produces(MediaType.)
-    
-    
-    /*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public String getSingle(@PathParam("id") int id) throws IOException {
-        return GSON.toJson(FACADE.getSingleSerie(id));
-    } */
+    @Path("/{username}/{seriesId}")
+    public Response getTicket(@PathParam("username") String username, @PathParam("seriesId") int seriesId) {
+        return Response.ok(FACADE.getTicket(username, seriesId)).build();
+    }
 }

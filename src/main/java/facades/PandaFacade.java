@@ -51,9 +51,30 @@ public class PandaFacade implements IPandaFacade {
 
     }
 
+
     @Override
-    public String getSingleSerie(String query) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SeriesDTO getSingleSerie(int id) throws MalformedURLException, IOException, ProtocolException {
+        URL url = new URL("https://api.pandascore.co/series/" + id + "?token=" + apiKey);
+        Gson gson = new Gson();
+        
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+        con.setRequestProperty("Content", "application/json");
+        
+        Scanner scan = new Scanner(con.getInputStream());
+        String jsonStr = null;
+        if(scan.hasNext()) {
+            jsonStr = scan.nextLine();
+        }
+        scan.close();
+        
+        if(jsonStr == null) {
+            return null;
+        }
+        
+        SeriesDTO res = gson.fromJson(jsonStr, SeriesDTO.class);
+        return res;
     }
 
     public static void main(String[] args) throws IOException {

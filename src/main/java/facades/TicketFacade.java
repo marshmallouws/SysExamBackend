@@ -1,0 +1,120 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package facades;
+
+import dtos.SeriesDTO;
+import dtos.TicketDTO;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import entities.Ticket;
+import entities.User;
+import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.NoResultException;
+import javax.persistence.RollbackException;
+import javax.persistence.TypedQuery;
+import utils.EMF_Creator;
+
+/**
+ *
+ * @author Annika
+ */
+public class TicketFacade {
+    private static TicketFacade instance;
+    private static EntityManagerFactory emf;
+    private PandaFacade p = PandaFacade.getPandaFacade();
+    
+    private TicketFacade() {}
+    
+    public static TicketFacade getTicketFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new TicketFacade();
+        }
+        
+        return instance;
+    }
+    
+    private EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+    
+    public TicketDTO sellTicket(String username, int seriesId) {
+        EntityManager em = getEntityManager();
+        User user = em.find(User.class, username);
+        
+        if(user == null) {
+            return null;
+        }
+        
+        try {
+            p.getSingleSerie(seriesId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.seriesId = :sId AND t.buyer.userName = :username", Ticket.class);
+        query.setParameter("sId", seriesId);
+        query.setParameter("username", username);
+        Ticket ticket = null;
+        
+        try {
+            ticket = query.getSingleResult();
+            ticket.setAmount(ticket.getAmount() +1);
+        } catch (NoResultException e) {
+            ticket = new Ticket(500.0, seriesId, user, 1);
+        } finally {
+            try {
+                em.getTransaction().begin();
+                em.merge(ticket);
+                em.getTransaction().commit();
+            } finally {
+                em.close();
+            }
+        }
+        return new TicketDTO(ticket);
+    }
+    
+    public List<TicketDTO> getTickets(String username) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.buyer.userName = :username", Ticket.class);
+        query.setParameter("username", username);
+        List<Ticket> tickets = query.getResultList();
+        List<TicketDTO> res = new ArrayList<>();
+        tickets.forEach(t -> {
+            res.add(new TicketDTO(t));
+        });
+        
+        return res;
+    }
+    
+    public TicketDTO getTicket(String username, int seriesId) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.buyer.userName = :username AND t.seriesId = :sId", Ticket.class);
+        query.setParameter("sId", seriesId);
+        query.setParameter("username", username);
+        
+        try {
+            return new TicketDTO(query.getSingleResult());
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    public static void main(String[] args) {
+        emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
+        TicketFacade t = TicketFacade.getTicketFacade(emf);
+        /*t.sellTicket("admin", 2299);
+        List<TicketDTO> l = t.getTickets("admin");
+        l.forEach(li -> {
+            System.out.println(li.getUsername() + li.getSeries_id() + " " + li.getAmount());
+        }); */
+        System.out.println(t.getTicket("admin", 2299));
+        System.out.println(t.getTicket("admin", 2301));
+    }
+}

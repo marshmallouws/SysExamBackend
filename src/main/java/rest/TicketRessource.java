@@ -6,10 +6,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.TicketDTO;
+import errorhandling.NotFoundException;
 import facades.TicketFacade;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
@@ -41,14 +44,18 @@ public class TicketRessource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/buy")
-    public Response buyTicket(String content) throws IOException {
+    public Response buyTicket(String content) throws IOException, NotFoundException {
         JsonArray json = new JsonParser().parse(content).getAsJsonArray();
         List<TicketDTO> tickets = new ArrayList();
         json.forEach(element -> {
-            JsonObject j = (JsonObject) element;
-            String username = j.get("username").getAsString();
-            int sId = j.get("sId").getAsInt();
-            tickets.add(FACADE.sellTicket(username, sId));
+            try {
+                JsonObject j = (JsonObject) element;
+                String username = j.get("username").getAsString();
+                int sId = j.get("sId").getAsInt();
+                tickets.add(FACADE.sellTicket(username, sId));
+            } catch (NotFoundException ex) {
+                Logger.getLogger(TicketRessource.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         return Response.ok(tickets).build();
     }

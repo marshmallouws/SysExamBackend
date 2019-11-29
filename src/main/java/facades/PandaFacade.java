@@ -7,80 +7,93 @@ package facades;
 
 import com.google.gson.Gson;
 import dtos.SeriesDTO;
+import errorhandling.NotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PandaFacade implements IPandaFacade {
+
     private static PandaFacade instance;
-    
+
     public static PandaFacade getPandaFacade() {
-        if(instance == null)  {
+        if (instance == null) {
             instance = new PandaFacade();
         }
         return instance;
     }
-    
+
     private static String apiKey = System.getenv("S3_PANDA_TOKEN");
 
     @Override
-    public SeriesDTO[] getAllSeries(String query) throws MalformedURLException, IOException, ProtocolException {
-        URL url = new URL("https://api.pandascore.co/series?sort=-year&per_page=15&" + "token="+apiKey);
+    public SeriesDTO[] getAllSeries() throws NotFoundException {
+        URL url = null;
         Gson gson = new Gson();
-        
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-        con.setRequestProperty("Content", "application/json");
-        
-        Scanner scan = new Scanner(con.getInputStream());
+        Scanner scan = null;
+        HttpURLConnection con = null;
+
+        try {
+            url = new URL("https://api.pandascore.co/series?sort=-year&per_page=15&" + "token=" + apiKey);
+
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+            con.setRequestProperty("Content", "application/json");
+
+            scan = new Scanner(con.getInputStream());
+        } catch (IOException e) {
+            throw new NotFoundException("Ressource cannot be found");
+        }
 
         String jsonStr = null;
-        if(scan.hasNext()) {
+        if (scan.hasNext()) {
             jsonStr = scan.nextLine();
         }
         scan.close();
-        
+
         SeriesDTO[] result = gson.fromJson(jsonStr, SeriesDTO[].class);
-        
+
         System.out.println(result[0].videogame.name);
         return result;
 
     }
 
-
     @Override
-    public SeriesDTO getSingleSerie(int id) throws MalformedURLException, IOException, ProtocolException {
-        URL url = new URL("https://api.pandascore.co/series/" + id + "?token=" + apiKey);
+    public SeriesDTO getSingleSerie(int id) throws NotFoundException {
+
+        URL url = null;
+        HttpURLConnection con = null;
+        Scanner scan = null;
         Gson gson = new Gson();
-        
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-        con.setRequestProperty("Content", "application/json");
-        
-        Scanner scan = new Scanner(con.getInputStream());
         String jsonStr = null;
-        if(scan.hasNext()) {
+
+        try {
+            url = new URL("https://api.pandascore.co/series/" + id + "?token=" + apiKey);
+            con = (HttpURLConnection) url.openConnection();
+
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+            con.setRequestProperty("Content", "application/json");
+
+            scan = new Scanner(con.getInputStream());
+        } catch (IOException ex) {
+            throw new NotFoundException("URL is not found");
+        }
+
+        if (scan.hasNext()) {
             jsonStr = scan.nextLine();
         }
         scan.close();
-        
-        if(jsonStr == null) {
-            return null;
+
+        if (jsonStr == null) {
+            throw new NotFoundException("No data on the given location");
         }
-        
-        SeriesDTO res = gson.fromJson(jsonStr, SeriesDTO.class);
-        return res;
-    }
 
-    public static void main(String[] args) throws IOException {
-        PandaFacade p = new PandaFacade();
-        System.out.println(p.getAllSeries(""));
+        return gson.fromJson(jsonStr, SeriesDTO.class);
     }
-
 }
-

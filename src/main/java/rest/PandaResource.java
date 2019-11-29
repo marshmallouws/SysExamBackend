@@ -3,12 +3,15 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.BookmarkDTO;
+import dtos.SeriesDTO;
 import entities.Bookmark;
 import entities.User;
+import errorhandling.NotFoundException;
 import facades.PandaFacade;
 import facades.UserFacade;
 import java.io.IOException;
 import java.util.List;
+import javafx.scene.chart.XYChart;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
@@ -39,7 +42,13 @@ public class PandaResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/first15")
     public String getFromUser() throws IOException {
-        return GSON.toJson(FACADE.getAllSeries(""));
+        SeriesDTO[] series = null;
+        try {
+            series = FACADE.getAllSeries();
+        } catch (NotFoundException e) {
+            
+        }
+        return GSON.toJson(series);
     }
 
     @POST

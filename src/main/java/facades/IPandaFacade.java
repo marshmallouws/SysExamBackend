@@ -7,6 +7,7 @@ package facades;
 
 import com.google.gson.JsonObject;
 import dtos.SeriesDTO;
+import errorhandling.NotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -18,7 +19,7 @@ import net.minidev.json.JSONObject;
  */
 public interface IPandaFacade {
     
-    public SeriesDTO[] getAllSeries(String query) throws MalformedURLException, IOException;
-    public SeriesDTO getSingleSerie(int seriesId) throws MalformedURLException, IOException, ProtocolException ;
+    public SeriesDTO[] getAllSeries() throws NotFoundException;
+    public SeriesDTO getSingleSerie(int seriesId) throws NotFoundException;
     
 }

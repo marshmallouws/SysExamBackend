@@ -5,18 +5,17 @@
  */
 package facades;
 
-import dtos.SeriesDTO;
 import dtos.TicketDTO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import entities.Ticket;
 import entities.User;
+import errorhandling.NotFoundException;
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
-import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import utils.EMF_Creator;
 
@@ -44,18 +43,19 @@ public class TicketFacade {
         return emf.createEntityManager();
     }
     
-    public TicketDTO sellTicket(String username, int seriesId) {
+    public TicketDTO sellTicket(String username, int seriesId) throws NotFoundException {
         EntityManager em = getEntityManager();
+        
         User user = em.find(User.class, username);
         
         if(user == null) {
-            return null;
+            throw new NotFoundException("User not found: " + username);
         }
         
         try {
             p.getSingleSerie(seriesId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e.getMessage() + seriesId);
         }
         
         TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.seriesId = :sId AND t.user.userName = :username", Ticket.class);
@@ -106,7 +106,7 @@ public class TicketFacade {
         }
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NotFoundException {
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         TicketFacade t = TicketFacade.getTicketFacade(emf);
         t.sellTicket("admin", 2299);

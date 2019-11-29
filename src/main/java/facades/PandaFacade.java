@@ -82,7 +82,7 @@ public class PandaFacade implements IPandaFacade {
 
             scan = new Scanner(con.getInputStream());
         } catch (IOException ex) {
-            throw new NotFoundException("URL is not found");
+            throw new NotFoundException("URL is not found. ID: " + id);
         }
 
         if (scan.hasNext()) {

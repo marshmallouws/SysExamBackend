@@ -52,11 +52,7 @@ public class TicketFacade {
             throw new NotFoundException("User not found: " + username);
         }
         
-        try {
-            p.getSingleSerie(seriesId);
-        } catch (NotFoundException e) {
-            throw new NotFoundException(e.getMessage() + seriesId);
-        }
+        p.getSingleSerie(seriesId);
         
         TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.seriesId = :sId AND t.user.userName = :username", Ticket.class);
         query.setParameter("sId", seriesId);

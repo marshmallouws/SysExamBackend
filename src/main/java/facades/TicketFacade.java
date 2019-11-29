@@ -58,7 +58,7 @@ public class TicketFacade {
             e.printStackTrace();
         }
         
-        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.seriesId = :sId AND t.buyer.userName = :username", Ticket.class);
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.seriesId = :sId AND t.user.userName = :username", Ticket.class);
         query.setParameter("sId", seriesId);
         query.setParameter("username", username);
         Ticket ticket = null;
@@ -82,7 +82,7 @@ public class TicketFacade {
     
     public List<TicketDTO> getTickets(String username) {
         EntityManager em = getEntityManager();
-        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.buyer.userName = :username", Ticket.class);
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.user.userName = :username", Ticket.class);
         query.setParameter("username", username);
         List<Ticket> tickets = query.getResultList();
         List<TicketDTO> res = new ArrayList<>();
@@ -95,7 +95,7 @@ public class TicketFacade {
     
     public TicketDTO getTicket(String username, int seriesId) {
         EntityManager em = getEntityManager();
-        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.buyer.userName = :username AND t.seriesId = :sId", Ticket.class);
+        TypedQuery<Ticket> query = em.createQuery("SELECT t FROM Ticket t WHERE t.user.userName = :username AND t.seriesId = :sId", Ticket.class);
         query.setParameter("sId", seriesId);
         query.setParameter("username", username);
         
@@ -109,11 +109,11 @@ public class TicketFacade {
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         TicketFacade t = TicketFacade.getTicketFacade(emf);
-        /*t.sellTicket("admin", 2299);
+        t.sellTicket("admin", 2299);
         List<TicketDTO> l = t.getTickets("admin");
         l.forEach(li -> {
             System.out.println(li.getUsername() + li.getSeries_id() + " " + li.getAmount());
-        }); */
+        });
         System.out.println(t.getTicket("admin", 2299));
         System.out.println(t.getTicket("admin", 2301));
     }

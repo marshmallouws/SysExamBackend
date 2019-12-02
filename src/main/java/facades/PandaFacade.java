@@ -57,8 +57,12 @@ public class PandaFacade implements IPandaFacade {
         scan.close();
 
         SeriesDTO[] result = gson.fromJson(jsonStr, SeriesDTO[].class);
+        for(SeriesDTO series : result){
+            series.setLocation();
+        }
 
         System.out.println(result[0].videogame.name);
+        System.out.println(result[0].location);
         return result;
 
     }

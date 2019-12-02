@@ -11,7 +11,6 @@ import facades.PandaFacade;
 import facades.UserFacade;
 import java.io.IOException;
 import java.util.List;
-import javafx.scene.chart.XYChart;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;

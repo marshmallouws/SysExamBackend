@@ -67,6 +67,7 @@ public class LoginEndpointTest {
             em.getTransaction().begin();
             //Delete existing users and roles to get a "fresh" database
             em.createQuery("delete from Bookmark").executeUpdate();
+            em.createQuery("delete from Ticket").executeUpdate();
             em.createQuery("delete from User").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
 

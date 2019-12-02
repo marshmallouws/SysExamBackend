@@ -45,6 +45,13 @@ public class User implements Serializable {
         orphanRemoval = true
   )
   private List<Bookmark> bookmarkList = new ArrayList<>();
+  
+  @OneToMany(
+        mappedBy = "user",
+          cascade = CascadeType.ALL,
+          orphanRemoval = true
+  )
+  private List<Ticket> tickets = new ArrayList<>();
 
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {

@@ -26,7 +26,7 @@ import utils.EMF_Creator;
  *
  * @author Annika
  */
-//@Disabled
+@Disabled
 public class TicketFacadeTest {
 
     private static EntityManagerFactory emf;

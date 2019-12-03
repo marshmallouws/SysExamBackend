@@ -109,4 +109,18 @@ public class PandaResource {
         String result = GSON.toJson(foundBookmarks);
         return result;
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/single/{sId}")
+    public Response getSingle(@PathParam("sId") int sId) {
+        SeriesDTO s = null; 
+        try {
+            s = FACADE.getSingleSerie(sId);
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
+        
+        return Response.ok(GSON.toJson(s)).build();
+    }
 }

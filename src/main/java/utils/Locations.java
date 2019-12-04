@@ -13,11 +13,11 @@ import dtos.LocationDTO;
  */
 public class Locations {
       private static final LocationDTO[] locations = {
-          new LocationDTO("Esport Arena Santa Ana","120 W. 5TH ST, SANTA ANA, CA 92701"),
-          new LocationDTO("Esport Arena Oakland","255 2ND ST OAKLAND, CA 94607"),
-          new LocationDTO("Esport Arena Las Vegas","Luxor Hotel & Casino 3900 S. Las Vegas Blvd. Las Vegas, NV 89119"),
-          new LocationDTO("Anaheim Convention Center","800 W Katella Ave, Anaheim, CA 92802, USA"),
-          new LocationDTO("Dreamhack","Elmiavägen 15, 554 54 Jönköping, Sweden"),
+          new LocationDTO("Esport Arena Santa Ana","120 W. 5TH ST, SANTA ANA, CA 92701", "John Wayne Airport"),
+          new LocationDTO("Esport Arena Oakland","255 2ND ST OAKLAND, CA 94607", "Oakland International Airport"),
+          new LocationDTO("Esport Arena Las Vegas","Luxor Hotel & Casino 3900 S. Las Vegas Blvd. Las Vegas, NV 89119", "McCarran International Airport"),
+          new LocationDTO("Anaheim Convention Center","800 W Katella Ave, Anaheim, CA 92802, USA", "Los Angeles International Airport"),
+          new LocationDTO("Dreamhack","Elmiavägen 15, 554 54 Jönköping, Sweden", "Jönköping Airport"),
         };
       
       public static LocationDTO getLocation(int eventId){

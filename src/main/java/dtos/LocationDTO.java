@@ -10,11 +10,20 @@ package dtos;
  * @author Victor
  */
 public class LocationDTO {
-    public String name, address;
+    public String name, address, airport;
 
-    public LocationDTO(String name, String address) {
+    public LocationDTO(String name, String address, String airport) {
         this.name = name;
         this.address = address;
+        this.airport = airport;
+    }
+
+    public void setAirport(String airport) {
+        this.airport = airport;
+    }
+
+    public String getAirport() {
+        return airport;
     }
 
     public String getName() {

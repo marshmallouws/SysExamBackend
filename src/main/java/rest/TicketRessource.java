@@ -34,6 +34,12 @@ public class TicketRessource {
     @Context
     SecurityContext securityContext;
     
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String demo() {
+        return "{\"msg\":\"Hello World\"}";
+    }
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

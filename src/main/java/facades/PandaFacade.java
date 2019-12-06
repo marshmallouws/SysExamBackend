@@ -99,7 +99,9 @@ public class PandaFacade implements IPandaFacade {
             throw new NotFoundException("No data on the given location");
         }
 
-        return gson.fromJson(jsonStr, SeriesDTO.class);
+        SeriesDTO series = gson.fromJson(jsonStr, SeriesDTO.class);
+        series.setLocation();
+        return series;
     }
     
     

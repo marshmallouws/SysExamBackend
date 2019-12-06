@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import dtos.FlightDTO;
+import errorhandling.NotFoundException;
 import facades.PandaFacade;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -32,15 +33,22 @@ public class FlightResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getAvailableFlights(String payload) {
         Gson gson = new Gson();
-        
+        FlightDTO[] flights = null;
         FlightDTO fdto = gson.fromJson(payload, FlightDTO.class);
         
-        System.out.println(fdto.getDate());
-        System.out.println(fdto.getStartDestination());
-        System.out.println(fdto.getDepature());
+        /*System.out.println(fdto.getOutboundDate());
+        System.out.println(fdto.getOriginPlace());
+        System.out.println(fdto.getDestination());*/
         
-        return "ay";
-        //FACADE.getFlight(payload, payload, payload, payload, payload, 0);
+        try {
+            flights = FACADE.getFlight(fdto.getOutboundDate(), "economy", fdto.getOriginPlace(), fdto.getDestination(), "1");
+        } catch(NotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        String res = gson.toJson(flights);
+        
+        return res;
     }
 
 }

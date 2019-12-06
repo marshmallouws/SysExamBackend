@@ -7,7 +7,7 @@ package dtos;
  */
 public class FlightDTO {
     
-    int id;
+    String id;
     String startDestination;
     String endDestination;
     String depature;
@@ -17,9 +17,14 @@ public class FlightDTO {
     String deeplinkUrl;
     String agentsName;
     String imageUrl;
-    String date;
+    
+    String outboundDate;
+    String cabinClass;
+    String originPlace;
+    String destination;
+    String adults; 
 
-    public FlightDTO(int id, String startDestination, String endDestination, String depature, String arrival, String duration, String price, String deeplinkUrl, String agentsName, String imageUrl, String date) {
+    public FlightDTO(String id, String startDestination, String endDestination, String depature, String arrival, String duration, String price, String deeplinkUrl, String agentsName, String imageUrl, String date, String cabinClass, String originPlace, String destination, String adults) {
         this.id = id;
         this.startDestination = startDestination;
         this.endDestination = endDestination;
@@ -30,14 +35,39 @@ public class FlightDTO {
         this.deeplinkUrl = deeplinkUrl;
         this.agentsName = agentsName;
         this.imageUrl = imageUrl;
-        this.date = date;
+        this.outboundDate = date;
+        this.cabinClass = cabinClass;
+        this.originPlace = originPlace;
+        this.destination = destination;
+        this.adults = adults;
     }
 
-    public int getId() {
+    public FlightDTO(String id, String startDestination, String endDestination, String depature, String arrival, String duration, String price, String deeplinkUrl, String agentsName, String imageUrl) {
+        this.id = id;
+        this.startDestination = startDestination;
+        this.endDestination = endDestination;
+        this.depature = depature;
+        this.arrival = arrival;
+        this.duration = duration;
+        this.price = price;
+        this.deeplinkUrl = deeplinkUrl;
+        this.agentsName = agentsName;
+        this.imageUrl = imageUrl;
+    }
+
+    public FlightDTO(String date, String cabinClass, String originPlace, String destination, String adults) {
+        this.outboundDate = date;
+        this.cabinClass = cabinClass;
+        this.originPlace = originPlace;
+        this.destination = destination;
+        this.adults = adults;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -113,14 +143,44 @@ public class FlightDTO {
         this.imageUrl = imageUrl;
     }
 
-    public String getDate() {
-        return date;
+    public String getOutboundDate() {
+        return outboundDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setOutboundDate(String outboundDate) {
+        this.outboundDate = outboundDate;
     }
-    
-    
-    
+
+    public String getCabinClass() {
+        return cabinClass;
+    }
+
+    public void setCabinClass(String cabinClass) {
+        this.cabinClass = cabinClass;
+    }
+
+    public String getOriginPlace() {
+        return originPlace;
+    }
+
+    public void setOriginPlace(String originPlace) {
+        this.originPlace = originPlace;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getAdults() {
+        return adults;
+    }
+
+    public void setAdults(String adults) {
+        this.adults = adults;
+    }
+
 }

@@ -90,6 +90,7 @@ public class LoginEndpoint {
         User user = USER_FACADE.getVeryfiedUser(username, password);
         List<String> roles = user.getRolesAsStrings();
         JsonArray rolesArr = new JsonArray();
+        String airport = user.getAirport();
 
         for (String r : roles) {
             rolesArr.add(r);
@@ -99,6 +100,7 @@ public class LoginEndpoint {
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("username", username);
         responseJson.addProperty("token", token);
+        responseJson.addProperty("airport", airport);
         responseJson.add("roles", rolesArr);
 
         return responseJson;

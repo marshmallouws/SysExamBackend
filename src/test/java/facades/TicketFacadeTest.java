@@ -5,12 +5,8 @@
  */
 package facades;
 
-import entities.Ticket;
 import entities.User;
 import errorhandling.NotFoundException;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;

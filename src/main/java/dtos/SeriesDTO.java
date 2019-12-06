@@ -3,6 +3,7 @@ package dtos;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import utils.Locations;
 
 public class SeriesDTO {
 
@@ -20,6 +21,8 @@ public class SeriesDTO {
     public String slug;
     public List<TournamentDTO> tournaments = null;
     public VideogameDTO videogame;
+    public LocationDTO location;    
+    
 
     public SeriesDTO(String begin_at, Object description, String end_at, String full_name, Integer id, LeagueDTO league, Integer league_id, String modified_at, String name, Object prizepool, Object season, String slug, VideogameDTO videogame, Object winner_id, Object winner_type, Integer year) {
         this.begin_at = begin_at;
@@ -38,9 +41,17 @@ public class SeriesDTO {
         this.winner_id = winner_id;
         this.winner_type = winner_type;
         this.year = year;
+        this.location = Locations.getLocation(id);
     }
 
-    
+    public LocationDTO getLocation() {
+        return location;
+    }
+
+    public void setLocation() {
+        this.location = Locations.getLocation(this.id);
+    }
+
     public String getBegin_at() {
         return begin_at;
     }

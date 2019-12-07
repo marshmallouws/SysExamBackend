@@ -122,6 +122,7 @@ public class PandaFacade implements IPandaFacade {
 
             scan = new Scanner(con.getInputStream());
         } catch (IOException e) {
+            e.printStackTrace();
             throw new NotFoundException("Ressource cannot be found");
         }
 

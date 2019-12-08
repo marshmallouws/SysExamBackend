@@ -43,7 +43,7 @@ public class TicketFacade {
         return emf.createEntityManager();
     }
     
-    public TicketDTO sellTicket(String username, int seriesId) throws NotFoundException {
+    public TicketDTO sellTicket(String username, int seriesId, double price) throws NotFoundException {
         EntityManager em = getEntityManager();
         
         User user = em.find(User.class, username);
@@ -63,7 +63,7 @@ public class TicketFacade {
             ticket = query.getSingleResult();
             ticket.setAmount(ticket.getAmount() +1);
         } catch (NoResultException e) {
-            ticket = new Ticket(500.0, seriesId, user, 1);
+            ticket = new Ticket(price, seriesId, user, 1);
         } finally {
             try {
                 em.getTransaction().begin();
@@ -105,7 +105,7 @@ public class TicketFacade {
     public static void main(String[] args) throws NotFoundException {
         emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         TicketFacade t = TicketFacade.getTicketFacade(emf);
-        t.sellTicket("admin", 2299);
+        t.sellTicket("admin", 2299, 500);
         List<TicketDTO> l = t.getTickets("admin");
         l.forEach(li -> {
             System.out.println(li.getUsername() + li.getSeries_id() + " " + li.getAmount());

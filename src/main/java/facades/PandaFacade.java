@@ -6,6 +6,7 @@
 package facades;
 
 import com.google.gson.Gson;
+import dtos.FlightDTO;
 import dtos.SeriesDTO;
 import errorhandling.NotFoundException;
 import java.io.IOException;
@@ -101,5 +102,44 @@ public class PandaFacade implements IPandaFacade {
         SeriesDTO series = gson.fromJson(jsonStr, SeriesDTO.class);
         series.setLocation();
         return series;
+    }
+    
+    
+    // tilføj til interface
+    public FlightDTO[] getFlight(String outBoundDate, String cabinClass, String originPlace, String destination, String adults) throws NotFoundException {
+        URL url = null;
+        Gson gson = new Gson();
+        Scanner scan = null;
+        HttpURLConnection con = null;
+        FlightDTO[] result = null;
+
+        try {         
+            url = new URL("https://www.leafmight.dk/security/api/info/flightdata/" + outBoundDate + "/" + cabinClass + "/" + originPlace + "/" + destination + "/" + "1");
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+            con.setRequestProperty("Content", "application/json");
+
+            scan = new Scanner(con.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new NotFoundException("Ressource cannot be found");
+        }
+
+        String jsonStr = null;
+        if (scan.hasNext()) {
+            jsonStr = scan.nextLine();
+        }
+        scan.close();
+
+        // aner ikke hvorfor, men det virker så snart det kommer i et try block
+        try {
+            result = gson.fromJson(jsonStr, FlightDTO[].class);
+        } catch (Exception E) {
+            E.printStackTrace();
+        }
+        
+        return result;
+
     }
 }

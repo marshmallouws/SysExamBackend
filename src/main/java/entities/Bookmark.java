@@ -31,7 +31,7 @@ public class Bookmark implements Serializable {
     private String bookmarkContent; // just test content
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bookmark_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Bookmark() {

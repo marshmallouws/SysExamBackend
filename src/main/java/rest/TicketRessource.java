@@ -28,45 +28,55 @@ import utils.EMF_Creator;
 
 @Path("tickets")
 public class TicketRessource {
+
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static final TicketFacade FACADE = TicketFacade.getTicketFacade(EMF);
 
     @Context
     SecurityContext securityContext;
-    
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/buy")
     public Response buyTicket(String content) throws IOException, NotFoundException {
         JsonArray json = new JsonParser().parse(content).getAsJsonArray();
+        System.out.println(json);
         List<TicketDTO> tickets = new ArrayList();
         json.forEach(element -> {
             try {
                 JsonObject j = (JsonObject) element;
                 String username = j.get("username").getAsString();
                 int sId = j.get("sId").getAsInt();
-                tickets.add(FACADE.sellTicket(username, sId));
+                double price;
+                String pTxt = j.get("type").getAsString();
+                if (pTxt.equals("flight")) {
+                    price = j.get("price").getAsDouble();
+                } else {
+                    price = 500;
+                }
+
+                tickets.add(FACADE.sellTicket(username, sId, price));
             } catch (NotFoundException ex) {
                 Logger.getLogger(TicketRessource.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         return Response.ok(tickets).build();
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/all/{username}")
     public Response getTickets(@PathParam("username") String username) {
         return Response.ok(FACADE.getTickets(username)).build();
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{username}/{seriesId}")

@@ -10,7 +10,7 @@ public class FlightDTO {
     String id;
     String startDestination;
     String endDestination;
-    String depature;
+    String departure;
     String arrival;
     String duration;
     String price;
@@ -28,7 +28,7 @@ public class FlightDTO {
         this.id = id;
         this.startDestination = startDestination;
         this.endDestination = endDestination;
-        this.depature = depature;
+        this.departure = depature;
         this.arrival = arrival;
         this.duration = duration;
         this.price = price;
@@ -46,7 +46,7 @@ public class FlightDTO {
         this.id = id;
         this.startDestination = startDestination;
         this.endDestination = endDestination;
-        this.depature = depature;
+        this.departure = depature;
         this.arrival = arrival;
         this.duration = duration;
         this.price = price;
@@ -88,11 +88,11 @@ public class FlightDTO {
     }
 
     public String getDepature() {
-        return depature;
+        return departure;
     }
 
     public void setDepature(String depature) {
-        this.depature = depature;
+        this.departure = depature;
     }
 
     public String getArrival() {

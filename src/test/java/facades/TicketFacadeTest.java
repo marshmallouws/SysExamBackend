@@ -22,6 +22,7 @@ import utils.EMF_Creator;
  *
  * @author Annika
  */
+/*
 @Disabled
 public class TicketFacadeTest {
 
@@ -101,4 +102,4 @@ public class TicketFacadeTest {
         
         assertEquals(amount + 1, facade.getTicket("admin", 2299).getAmount());
     }
-}
+} */

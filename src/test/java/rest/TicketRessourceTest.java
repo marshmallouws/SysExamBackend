@@ -30,6 +30,8 @@ import utils.EMF_Creator;
  *
  * @author Annika
  */
+
+/*
 @Disabled
 public class TicketRessourceTest {
 
@@ -106,4 +108,4 @@ public class TicketRessourceTest {
                 .post("/tickets/buy").then()
                 .statusCode(200);
     }
-}
+} */
